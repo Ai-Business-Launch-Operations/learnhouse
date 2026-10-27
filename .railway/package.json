@@ -1,0 +1,9 @@
+{
+  "name": "learnhouse-railway",
+  "private": true,
+  "type": "module",
+  "description": "Railway IaC SDK for .railway/railway.ts. Install with `npm ci` in this folder.",
+  "devDependencies": {
+    "railway": "3.16.0"
+  }
+}
