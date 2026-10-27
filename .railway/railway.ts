@@ -30,7 +30,12 @@ export default defineRailway(() => {
   const cache = redis(CACHE);
 
   // Uploaded course content when LEARNHOUSE_CONTENT_DELIVERY_TYPE=filesystem.
-  const content = volume("learnhouse-content");
+  // Region and size are what Railway assigned on creation. Leaving them out makes
+  // every plan propose clearing them, which Railway treats as destructive.
+  const content = volume("learnhouse-content", {
+    region: "us-east4-eqdc4a",
+    sizeMB: 50000,
+  });
 
   const app = service("learnhouse", {
     source: github("Ai-Business-Launch-Operations/learnhouse", { branch: "main" }),
@@ -59,10 +64,6 @@ export default defineRailway(() => {
     // One replica: uploads live on a single-attach volume and the API runs its
     // schedulers in-process.
     replicas: 1,
-    deploy: {
-      restartPolicyType: "ON_FAILURE",
-      restartPolicyMaxRetries: 10,
-    },
     volumeMounts: {
       "/app/api/content": content,
     },
